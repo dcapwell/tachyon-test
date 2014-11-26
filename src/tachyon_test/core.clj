@@ -29,3 +29,8 @@
   "Produces random byte array"
   ([] (rnd-bytes (config :default-data-size)))
   ([n] (byte-array n)))
+
+(defn bounded
+  "Runs the function in the background. If the function takes longer than timeout then a timeout exception is thrown"
+  [fn & {:keys [timeout time-unit] :or {timeout 30 time-unit java.util.concurrent.TimeUnit/SECONDS}}]
+  (.get (future-call fn) timeout time-unit))

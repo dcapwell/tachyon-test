@@ -8,4 +8,5 @@
   :plugins [[lein-test-out "0.3.1"]]
   :dependencies [
     [org.clojure/clojure "1.5.1"]
+    [me.raynes/fs "1.4.6"]
     [org.tachyonproject/tachyon "0.6.0-SNAPSHOT"]])
