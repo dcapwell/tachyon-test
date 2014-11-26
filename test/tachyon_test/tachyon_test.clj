@@ -1,9 +1,10 @@
-(ns tachyon-test.core-test
+(ns tachyon-test.tachyon-test
   (:use [tachyon-test.config :as config])
   (:import [tachyon.client WriteType ReadType]
            [com.google.common.io ByteStreams])
   (:require [clojure.test :refer :all]
-            [tachyon-test.core :refer :all]))
+            [tachyon-test.core :refer :all]
+            [tachyon-test.tachyon :refer :all]))
 
 (deftest missing-file
   (testing "Verifies that missing files return null"
