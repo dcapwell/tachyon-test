@@ -9,9 +9,13 @@
       (throw (java.lang.AssertionError. (str "Required " name " environment variable")))
       v)))
 
-(defmulti find-file (fn [base regex] (class regex)))
+(defmulti find-file 
+  "Does a recursive search for a file matching the provided regex. Only one file will be returned"
+  (fn [base regex] (class regex)))
+
 (defmethod find-file java.util.regex.Pattern [base regex]
   (first (fs/find-files base regex)))
+
 (defmethod find-file java.lang.String [base regex]
   (find-file base (java.util.regex.Pattern/compile regex)))
 
