@@ -1,4 +1,5 @@
 (ns tachyon-test.shell
+  (:require [clojure.tools.logging :as log])
   (:import [java.lang System ProcessBuilder Process]))
 
 (defn- copy
@@ -15,7 +16,7 @@
   "Forks off a command, returning a java Process. If :inheritIO is true, :out and :err will be empty."
   [cmd & {:keys [env inheritIO] :or {env (System/getenv) inheritIO true}}]
   (do
-    (println "Running command: " cmd)
+    (log/info "Running command: " cmd)
     (let [p (ProcessBuilder. cmd)]
       (.putAll (.environment p) env)
       (if inheritIO (.inheritIO p))
