@@ -1,6 +1,6 @@
 (ns tachyon-test.tachyon
-  (:use [tachyon-test.config :as config])
-  (:require [clojure.test :refer :all])
+  (:require [clojure.test :refer :all]
+            [tachyon-test.config :refer [config]])
   (:import [tachyon.client TachyonFS]))
 
 (defn create-filesystem 

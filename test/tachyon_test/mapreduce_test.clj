@@ -1,7 +1,7 @@
 (ns tachyon-test.mapreduce-test
-  (:use [tachyon-test.config :as config])
   (:require [clojure.test :refer :all]
             [clojure.tools.logging :as log]
+            [tachyon-test.config :refer [config]]
             [tachyon-test.core :refer :all]
             [tachyon-test.tachyon :refer :all]
             [tachyon-test.mapreduce :refer :all]))

@@ -1,5 +1,5 @@
 (ns tachyon-test.core
-  (:use [tachyon-test.config :as config]))
+  (:require [tachyon-test.config :refer [config]]))
 
 (defn uniq-id
   "Returns a new and unique object. This object has a valid string form"
