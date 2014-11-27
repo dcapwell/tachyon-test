@@ -15,11 +15,11 @@
 (deftest add-file-recursive
   (testing "Verifies that adding a new non-existing file where the parent path does not exist will create the file")
     (with-open [fs (create-filesystem)]
-      (let [path (uniq-path "/add-file-recursive/")
-            file (create-file fs path)]
-        (is (not (.isComplete file)))
-        (is (not (.isDirectory file)))
-        (is (.isFile file))
+      (let [path (uniq-path "/add-file-recursive/")]
+        (->> (create-file fs path)
+          (is-not-complete)
+          (is-not-dir)
+          (is-file))
         (.delete fs path false))))
 
 (deftest write-file
