@@ -15,7 +15,7 @@
   "Forks off a command, returning a java Process. If :inheritIO is true, :out and :err will be empty."
   [cmd & {:keys [env inheritIO] :or {env (System/getenv) inheritIO true}}]
   (do
-    (print "Running command: " cmd)
+    (println "Running command: " cmd)
     (let [p (ProcessBuilder. cmd)]
       (.putAll (.environment p) env)
       (if inheritIO (.inheritIO p))
