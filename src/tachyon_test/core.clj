@@ -15,7 +15,9 @@
 (defn rnd-bytes
   "Produces random byte array"
   ([] (rnd-bytes (config :default-data-size)))
-  ([n] (byte-array n)))
+  ([n] 
+   {:pre [(pos? n)]}
+   (byte-array n)))
 
 (defn bounded
   "Runs the function in the background. If the function takes longer than timeout then a timeout 
