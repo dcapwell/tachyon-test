@@ -9,9 +9,13 @@
   :dependencies [
     [org.clojure/clojure "1.5.1"]
     [org.clojure/tools.logging "0.3.1"]
+    [org.clojure/test.check "0.5.9"]
+    [clj-ssh "0.5.11"]
     [me.raynes/fs "1.4.6"]
     [ch.qos.logback/logback-classic "1.1.2"]
     [org.slf4j/jcl-over-slf4j "1.7.7"]
     [org.tachyonproject/tachyon "0.6.0-SNAPSHOT" :exclusions [[org.slf4j/slf4j-log4j12]
                                                               [commons-logging/commons-logging]
-                                                              [log4j/log4j]]]])
+                                                              [log4j/log4j]]]]
+  :profiles {:proto {:source-paths ["proto"]
+                     :test-paths ["proto"]}})
