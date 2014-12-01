@@ -1,12 +1,70 @@
 (ns tachyon-test.tachyon
-  (:require [clojure.test :refer :all]
+  (:require [clojure.string :as string]
+            [clojure.test :refer :all]
+            [clojure.test.check.generators :as gen]
             [tachyon-test.config :refer [config]])
   (:import [tachyon.client TachyonFS]))
+
+(defn- prefix
+  "Makes sure that the given string is present in the given string"
+  [p rest]
+  (if (.startsWith rest p)
+    rest
+    (str p rest)))
+
+(defmulti path
+  "Constructs a file system type string based off the given parts"
+  (fn [parts] (class parts)))
+
+(defmethod path java.lang.String [parts]
+  (prefix "/" parts))
+
+(defmethod path clojure.lang.PersistentVector [parts]
+  (prefix "/" (string/join "/" parts)))
+
+(defn path-gen
+  "Generator that creates tachyon paths"
+  []
+  (->> (gen/not-empty gen/string)
+       (gen/such-that #(not (.contains % "/")))
+       (gen/vector)
+       (gen/not-empty)
+       (gen/fmap path)))
 
 (defn create-filesystem 
   "Creates a new TachyonFS based off the given address"
   [ & {:keys [address] :or {address (config :master-address)}}]
   (TachyonFS/get address))
+
+(defmulti perform-action
+  "Runs a given action and returns a boolean for the status"
+  (fn [action] [(:type action) (:via action)]))
+
+(defmethod perform-action [::create-file ::java]
+  [action]
+  (with-open [fs (create-filesystem)]
+    (try
+      (let [file (.createFile fs (:path action))]
+        ; no exception was thrown, so action was ok
+        true)
+      (catch java.io.IOException e
+        (case (class (.getCause e))
+          #=tachyon.thrift.InvalidPathException true
+          #=tachyon.thrift.FileAlreadyExistException true
+          false)))))
+
+(defmethod perform-action [::fetch-file ::java]
+  [action]
+  (with-open [fs (create-filesystem)]
+    (try
+      (let [file (.getFile fs (:path action))
+            test [(= (.isComplete file) (:complete? action))
+                  (= (.isDirectory file) (:directory? action))
+                  (= (.isFile file) (:file? action))
+                  (= (.isInMemory file) (:in-memory? action))]]
+        (println test)
+        (every? identity test))
+      (catch Exception e false))))
 
 (defn create-file
   "Attempts to create a file at the given path. If the path already exists or 

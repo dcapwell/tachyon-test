@@ -14,8 +14,8 @@
     [me.raynes/fs "1.4.6"]
     [ch.qos.logback/logback-classic "1.1.2"]
     [org.slf4j/jcl-over-slf4j "1.7.7"]
-    [org.tachyonproject/tachyon "0.6.0-SNAPSHOT" :exclusions [[org.slf4j/slf4j-log4j12]
-                                                              [commons-logging/commons-logging]
-                                                              [log4j/log4j]]]]
-  :profiles {:proto {:source-paths ["proto"]
-                     :test-paths ["proto"]}})
+    [org.tachyonproject/tachyon-client "0.6.0-SNAPSHOT"
+                                        :exclusions [[commons-logging/commons-logging]
+                                                     [log4j/log4j]]]]
+  :profiles {:experiment {:source-paths ["experiment"]
+                          :test-paths ["experiment"]}})
