@@ -57,13 +57,8 @@
   [action]
   (with-open [fs (create-filesystem)]
     (try
-      (let [file (.getFile fs (:path action))
-            test [(= (.isComplete file) (:complete? action))
-                  (= (.isDirectory file) (:directory? action))
-                  (= (.isFile file) (:file? action))
-                  (= (.isInMemory file) (:in-memory? action))]]
-        (println test)
-        (every? identity test))
+      (let [file (.getFile fs (:path action))]
+        (apply (:test action) file))
       (catch Exception e false))))
 
 (defn create-file

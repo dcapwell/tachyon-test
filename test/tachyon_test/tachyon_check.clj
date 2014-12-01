@@ -29,7 +29,9 @@
        (tachyon/perform-action {:type ::tachyon/fetch-file
                                 :via ::tachyon/java
                                 :path v
-                                :complete? false
-                                :directory? false
-                                :file? true
-                                :in-memory? true})])))
+                                :test (fn [file]
+                                        (and
+                                          (= (.isComplete file) false)
+                                          (= (.isDirectory file) false)
+                                          (= (.isFile file) true)
+                                          (= (.isInMemory file) true)))})])))
