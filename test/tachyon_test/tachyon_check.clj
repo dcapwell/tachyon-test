@@ -6,10 +6,10 @@
             [clojure.test.check.clojure-test :refer (defspec)]
             [tachyon-test.config :refer [config]]
             [tachyon-test.core :as core]
-            [tachyon-test.tachyon :as tachyon]))
+            [tachyon-test.tachyon :as tachyon])
+  (:import [tachyon TachyonURI]))
 
-; (def iterations 500)
-(def iterations 100)
+(def iterations 500)
 
 (defspec path-string
   iterations
@@ -17,6 +17,14 @@
     (=
       (tachyon/path v)
       (tachyon/path (tachyon/path v)))))
+
+(defspec tachyon-uri-path
+  iterations
+  (prop/for-all [v (tachyon/path-gen)]
+    (try
+      (TachyonURI. v)
+      true
+      (catch java.net.URISyntaxException e false))))
 
 (defspec create-file
   iterations
