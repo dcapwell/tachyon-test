@@ -49,8 +49,8 @@
         true)
       (catch java.io.IOException e
         (case (class (.getCause e))
-          #=tachyon.thrift.InvalidPathException true
-          #=tachyon.thrift.FileAlreadyExistException true
+          #=tachyon.thrift.InvalidPathException :fail
+          #=tachyon.thrift.FileAlreadyExistException :fail
           false)))))
 
 (defmethod perform-action [::fetch-file ::java]
@@ -58,7 +58,7 @@
   (with-open [fs (create-filesystem)]
     (try
       (let [file (.getFile fs (:path action))]
-        (apply (:test action) file))
+        (apply (:test action) [file]))
       (catch Exception e false))))
 
 (defn create-file
